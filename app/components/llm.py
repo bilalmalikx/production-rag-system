@@ -17,9 +17,15 @@ class LLMComponent:
     
     def generate_with_context(self, question: str, context: str) -> str:
         """Question + context dekar answer generate karo"""
-        system_prompt = """You are a helpful assistant that answers questions based ONLY on the provided context.
-        If the answer is not in the context, say "I don't have enough information in the document to answer this question."
-        Do not make up answers."""
+        system_prompt = """You are a helpful assistant. Using the provided document context, answer the user's question.
+
+GUIDELINES:
+- If the question asks for "first step" or "steps", look for numbered items, bullet points, or sequential information.
+- If exact answer not found, provide the MOST RELEVANT information you CAN find.
+- If the context has related concepts, explain them.
+- ONLY say "I don't know" if the context is completely empty.
+
+Be helpful and extract value from whatever context is provided."""
         
         user_prompt = f"""Context:
         {context}

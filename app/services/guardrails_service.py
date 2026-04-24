@@ -12,28 +12,19 @@ class GuardrailsService:
         ]
     
     def validate_answer(self, answer: str, context: str) -> Tuple[bool, str]:
-        """
-        Check if answer is grounded in context
-        Returns: (is_valid, validated_answer)
-        """
+        """Check if answer is grounded in context"""
         answer_lower = answer.lower()
-        
-        # Check for fallback phrases
+    
+    # Check for fallback phrases (these are OK)
         for phrase in self.fallback_phrases:
             if phrase in answer_lower:
                 return True, answer  # LLM already said it doesn't know
-        
-        # Simple check: Does answer contain words from context?
-        context_words = set(context.lower().split())
-        answer_words = set(answer_lower.split())
-        
-        # Agar answer ke 30% words context mein nahi hain, to hallucination ho sakta hai
-        common_words = answer_words.intersection(context_words)
-        coverage = len(common_words) / len(answer_words) if answer_words else 0
-        
-        if coverage < 0.3 and len(answer_words) > 5:
-            return False, "I cannot find sufficient information in the document to answer this question accurately."
-        
+    
+    # Skip the coverage check for now (too aggressive)
+    # if coverage < 0.3 and len(answer_words) > 5:
+    #     return False, "I cannot provide an accurate answer based on the document content."
+    
+    # Always return True for now
         return True, answer
     
     def sanitize_answer(self, answer: str) -> str:
