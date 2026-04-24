@@ -1,3 +1,6 @@
+/* Import fonts (MUST be at top) */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
 /* Global styles */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -31,9 +34,4 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  margin: 0;
-  padding: 0;
 }
-
-/* Import fonts */
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');

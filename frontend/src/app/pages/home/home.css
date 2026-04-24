@@ -1,8 +1,28 @@
-/* Global Reset for full height */
-html, body {
-  margin: 0;
-  padding: 0;
+:host {
+  display: block;
   min-height: 100vh;
+}
+
+/* CSS Variables */
+:root {
+  --bg: #070710;
+  --bg2: #0d0d1a;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-hover: rgba(255, 255, 255, 0.07);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-bright: rgba(255, 255, 255, 0.15);
+  --accent: #6c63ff;
+  --accent2: #a78bfa;
+  --accent-glow: rgba(108, 99, 255, 0.35);
+  --teal: #2dd4bf;
+  --teal-glow: rgba(45, 212, 191, 0.25);
+  --text: #f0eeff;
+  --text-muted: rgba(240, 238, 255, 0.45);
+  --text-dim: rgba(240, 238, 255, 0.25);
+  --success: #34d399;
+  --error: #f87171;
+  --radius: 16px;
+  --radius-sm: 10px;
 }
 
 /* Animated Background */
@@ -14,7 +34,7 @@ html, body {
   overflow: hidden;
 }
 
-.orb {
+.bg-mesh .orb {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
@@ -22,16 +42,15 @@ html, body {
   animation: drift 18s ease-in-out infinite;
 }
 
-.orb1 {
+.bg-mesh .orb1 {
   width: 600px;
   height: 600px;
   background: #6c63ff;
   top: -200px;
   left: -100px;
-  animation-delay: 0s;
 }
 
-.orb2 {
+.bg-mesh .orb2 {
   width: 500px;
   height: 500px;
   background: #2dd4bf;
@@ -40,7 +59,7 @@ html, body {
   animation-delay: -6s;
 }
 
-.orb3 {
+.bg-mesh .orb3 {
   width: 400px;
   height: 400px;
   background: #a78bfa;
@@ -49,14 +68,160 @@ html, body {
   animation-delay: -12s;
 }
 
+.bg-noise {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* App */
+.app {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* Header */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32px 0 48px;
+  animation: fadeDown 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, var(--accent), var(--teal));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 0 24px var(--accent-glow);
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.logo-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.5px;
+}
+
+.logo-text span {
+  color: var(--accent2);
+}
+
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: blink 2s infinite;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding-bottom: 56px;
+}
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+}
+
+.hero h1 .grad {
+  background: linear-gradient(135deg, var(--accent2), var(--teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* File Chip */
+.file-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.file-chip:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+}
+
+.file-chip.active {
+  border-color: var(--accent);
+  background: rgba(108, 99, 255, 0.08);
+}
+
+.file-chip.active .file-chip-dot {
+  background: var(--accent);
+}
+
+.file-chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-dim);
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 40px 0;
+  position: relative;
+}
+
+.divider::after {
+  content: '✦';
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Animations */
 @keyframes drift {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(40px, -40px) scale(1.05);
-  }
-  66% {
-    transform: translate(-30px, 30px) scale(0.95);
-  }
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, -30px); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 24px var(--accent-glow); }
+  50% { box-shadow: 0 0 40px var(--accent-glow); }
 }

@@ -73,7 +73,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Subscribe to documents
     this.documentService.documents$
       .pipe(takeUntil(this.destroy$))
       .subscribe(docs => {
@@ -81,42 +80,36 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.stats.documents = docs.length;
       });
     
-    // Subscribe to selected document
     this.documentService.selectedDocument$
       .pipe(takeUntil(this.destroy$))
       .subscribe(doc => {
         this.selectedDocument = doc;
       });
     
-    // Subscribe to current answer
     this.questionService.currentAnswer$
       .pipe(takeUntil(this.destroy$))
       .subscribe(answer => {
         this.currentAnswer = answer;
       });
     
-    // Subscribe to history
     this.questionService.history$
       .pipe(takeUntil(this.destroy$))
       .subscribe(history => {
         this.history = history;
       });
     
-    // Subscribe to loading state
     this.questionService.isLoading$
       .pipe(takeUntil(this.destroy$))
       .subscribe(loading => {
         this.isLoading = loading;
       });
     
-    // Subscribe to upload progress
     this.documentService.uploadProgress$
       .pipe(takeUntil(this.destroy$), debounceTime(50))
       .subscribe(progress => {
         this.uploadProgress = progress;
       });
     
-    // Subscribe to question count
     this.questionService.questionCount$
       .pipe(takeUntil(this.destroy$))
       .subscribe(count => {
@@ -124,14 +117,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.updateAvgConfidence();
       });
     
-    // Subscribe to confidence scores
     this.questionService.confidenceScores$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateAvgConfidence();
       });
     
-    // Check backend health
     this.checkHealth();
   }
 
@@ -151,7 +142,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  // File handling
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
@@ -178,7 +168,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.uploadError = null;
     this.documentService.resetUploadProgress();
     
-    // Simulate progress animation
     this.animateProgress(0, 30, 400);
     
     this.apiService.uploadPDF(file).subscribe({
@@ -225,7 +214,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }, 5000);
   }
 
-  // Question handling
   askQuestion(): void {
     if (!this.questionText.trim()) return;
     if (!this.selectedDocument && this.documents.length === 0) {
@@ -254,7 +242,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.questionService.setCurrentAnswer(answer);
         this.questionService.setLoading(false);
         
-        // Clear input
         this.questionText = '';
         this.resetTextareaHeight();
       },
@@ -306,10 +293,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     const textarea = event.target as HTMLTextAreaElement;
     textarea.style.height = 'auto';
     textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
-  }
-
-  trackByIndex(index: number): number {
-    return index;
   }
 
   trackByFilename(index: number, doc: Document): string {
