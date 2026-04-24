@@ -19,7 +19,7 @@ export class ApiService {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post<UploadResponse>(`${this.apiUrl}/upload`, formData)
+    return this.http.post<UploadResponse>(`${this.apiUrl}/api/upload`, formData)
       .pipe(
         timeout(this.timeoutMs),
         retry(1),
