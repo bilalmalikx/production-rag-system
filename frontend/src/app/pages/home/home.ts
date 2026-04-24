@@ -26,10 +26,10 @@ import { StatsCardComponent } from '../../shared/components/stats-card/stats-car
     FormsModule, 
     DragDropDirective, 
     SafeHtmlPipe,
-    FileUploadComponent,      // ✅ Added
-    QuestionInputComponent,    // ✅ Added
-    AnswerDisplayComponent,    // ✅ Added
-    StatsCardComponent         // ✅ Added
+    FileUploadComponent,
+    QuestionInputComponent,
+    AnswerDisplayComponent,
+    StatsCardComponent   
   ],
   templateUrl: './home.html',
   styleUrl: './home.css'
