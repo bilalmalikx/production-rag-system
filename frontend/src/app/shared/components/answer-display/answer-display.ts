@@ -7,7 +7,7 @@ import { SafeHtmlPipe } from '../../pipes/safe-html-pipe';
   selector: 'app-answer-display',
   imports: [CommonModule, SafeHtmlPipe],
   templateUrl: './answer-display.html',
-  styleUrl: './answer-display.css',
+  styleUrls: ['./answer-display.css']
 })
 export class AnswerDisplayComponent {
   @Input() currentAnswer: Answer | null = null;
@@ -19,5 +19,12 @@ export class AnswerDisplayComponent {
   
   trackByQuestion(index: number, turn: any): string {
     return turn.question.question + turn.answer.timestamp;
+  }
+  
+  // Helper method to truncate long source text
+  getShortText(source: string): string {
+    if (!source) return '';
+    if (source.length <= 150) return source;
+    return source.substring(0, 147) + '...';
   }
 }

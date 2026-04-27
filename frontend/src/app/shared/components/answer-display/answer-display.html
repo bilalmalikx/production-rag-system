@@ -12,8 +12,8 @@
     <div class="answer-body" [innerHTML]="currentAnswer.content | safeHtml"></div>
     <div class="answer-sources" *ngIf="currentAnswer.hasSources">
       <div class="sources-label">Source Excerpts</div>
-      <div *ngFor="let source of currentAnswer.sources" class="source-item">
-        {{ source | safeHtml }}
+      <div *ngFor="let source of currentAnswer.sources; let i = index" class="source-item">
+        <span [innerHTML]="source | safeHtml"></span>
       </div>
     </div>
   </div>
@@ -33,8 +33,8 @@
         <div class="answer-body" [innerHTML]="turn.answer.content | safeHtml"></div>
         <div class="answer-sources-compact" *ngIf="turn.answer.hasSources">
           <div class="sources-label-small">Sources</div>
-          <div *ngFor="let source of turn.answer.sources" class="source-item-small">
-            {{ source | slice:0:150 }}...
+          <div *ngFor="let source of turn.answer.sources; let i = index" class="source-item-small">
+            <span [innerHTML]="getShortText(source) | safeHtml"></span>
           </div>
         </div>
       </div>
