@@ -10,13 +10,13 @@ class EmbeddingsComponent:
         )
     
     def get_embeddings(self):
-        """Embeddings object return karta hai (vector store ke liye)"""
+        """Returns embeddings object (for vector store)"""
         return self.embeddings
     
     def embed_text(self, text: str) -> List[float]:
-        """Ek single text ka vector bana deta hai (1536 dimensions ka)"""
+        """Generates embedding for a single text"""
         return self.embeddings.embed_query(text)
     
     def embed_documents(self, texts: List[str]) -> List[List[float]]:
-        """Multiple texts ka ek saath vector bana deta hai"""
+        """Generates embeddings for multiple texts"""
         return self.embeddings.embed_documents(texts)

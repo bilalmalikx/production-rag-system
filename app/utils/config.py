@@ -16,7 +16,8 @@ class Config:
     UPLOAD_DIR = os.getenv("UPLOAD_DIR", "data/uploads")
     
     # Model names
-    EMBEDDING_MODEL = "text-embedding-ada-002"
+    # EMBEDDING_MODEL = "text-embedding-ada-002"
+    EMBEDDING_MODEL = "all-MiniLM-L6-v2"
     LLM_MODEL = "gpt-3.5-turbo"
     
     # Retrieval
