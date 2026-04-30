@@ -4,11 +4,9 @@
   "cli": {
     "packageManager": "npm"
   },
-  "newProjectRoot": "projects",
   "projects": {
     "frontend": {
       "projectType": "application",
-      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -24,24 +22,11 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "styles": ["src/styles.css"]
           },
           "configurations": {
             "production": {
-              "budgets": [
-  {
-    "type": "initial",
-    "maximumWarning": "2MB",
-    "maximumError": "5MB"
-  },
-  {
-    "type": "anyComponentStyle",
-    "maximumWarning": "50kB",
-    "maximumError": "100kB"
-  }
-],
+              "budgets": [],
               "outputHashing": "all"
             },
             "development": {
@@ -63,9 +48,6 @@
             }
           },
           "defaultConfiguration": "development"
-        },
-        "test": {
-          "builder": "@angular/build:unit-test"
         }
       }
     }
