@@ -1,13 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil, debounceTime } from 'rxjs';
 
-// Models
 import { Document } from '../../core/models/document.model';
 import { Answer } from '../../core/models/answer.model';
-import { DragDropDirective } from '../../shared/directives/drag-drop';
-import { SafeHtmlPipe } from '../../shared/pipes/safe-html-pipe';
 import { ApiService } from '../../core/services/api';
 import { DocumentService } from '../../core/services/document';
 import { QuestionService } from '../../core/services/question';
@@ -15,8 +12,6 @@ import { FileUploadComponent } from '../../shared/components/file-upload/file-up
 import { QuestionInputComponent } from '../../shared/components/question-input/question-input';
 import { AnswerDisplayComponent } from '../../shared/components/answer-display/answer-display';
 import { StatsCardComponent } from '../../shared/components/stats-card/stats-card';
-
-// Services
 
 @Component({
   selector: 'app-home',
@@ -30,12 +25,11 @@ import { StatsCardComponent } from '../../shared/components/stats-card/stats-car
     StatsCardComponent   
   ],
   templateUrl: './home.html',
-  styleUrl: './home.css'
+  styleUrls: ['./home.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild('questionInput') questionInput!: ElementRef<HTMLTextAreaElement>;
   
-  // State variables
   documents: Document[] = [];
   selectedDocument: Document | null = null;
   currentAnswer: Answer | null = null;
@@ -46,7 +40,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   uploadError: string | null = null;
   qaError: string | null = null;
   
-  // Form
   questionText = '';
   hints = [
     'Summarize the document',
@@ -55,7 +48,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     'Who are the authors?'
   ];
   
-  // Stats
   stats = {
     documents: 0,
     questions: 0,
@@ -67,7 +59,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private apiService: ApiService,
     private documentService: DocumentService,
-    private questionService: QuestionService
+    private questionService: QuestionService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -76,36 +69,42 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(docs => {
         this.documents = docs;
         this.stats.documents = docs.length;
+        this.cdr.detectChanges();
       });
     
     this.documentService.selectedDocument$
       .pipe(takeUntil(this.destroy$))
       .subscribe(doc => {
         this.selectedDocument = doc;
+        this.cdr.detectChanges();
       });
     
     this.questionService.currentAnswer$
       .pipe(takeUntil(this.destroy$))
       .subscribe(answer => {
         this.currentAnswer = answer;
+        this.cdr.detectChanges();
       });
     
     this.questionService.history$
       .pipe(takeUntil(this.destroy$))
       .subscribe(history => {
         this.history = history;
+        this.cdr.detectChanges();
       });
     
     this.questionService.isLoading$
       .pipe(takeUntil(this.destroy$))
       .subscribe(loading => {
         this.isLoading = loading;
+        this.cdr.detectChanges();
       });
     
     this.documentService.uploadProgress$
       .pipe(takeUntil(this.destroy$), debounceTime(50))
       .subscribe(progress => {
         this.uploadProgress = progress;
+        this.cdr.detectChanges();
       });
     
     this.questionService.questionCount$
@@ -113,12 +112,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(count => {
         this.stats.questions = count;
         this.updateAvgConfidence();
+        this.cdr.detectChanges();
       });
     
     this.questionService.confidenceScores$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateAvgConfidence();
+        this.cdr.detectChanges();
       });
     
     this.checkHealth();
@@ -181,12 +182,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.documentService.addDocument(document);
           this.isUploading = false;
           this.documentService.resetUploadProgress();
+          this.cdr.detectChanges();
         }, 500);
       },
       error: (err) => {
         this.isUploading = false;
         this.documentService.resetUploadProgress();
         this.showUploadError(err.message);
+        this.cdr.detectChanges();
       }
     });
   }
@@ -209,6 +212,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.uploadError = message;
     setTimeout(() => {
       this.uploadError = null;
+      this.cdr.detectChanges();
     }, 5000);
   }
 
@@ -221,6 +225,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     
     this.qaError = null;
     this.questionService.setLoading(true);
+    this.cdr.detectChanges();
     
     const request = {
       question: this.questionText.trim(),
@@ -233,7 +238,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           response.question,
           response.answer,
           response.confidence,
-          response.source_chunks
+          response.source_chunks || []
         );
         
         this.questionService.addToHistory(this.questionText, answer);
@@ -242,10 +247,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         
         this.questionText = '';
         this.resetTextareaHeight();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.questionService.setLoading(false);
         this.showQAError(err.message);
+        this.cdr.detectChanges();
       }
     });
   }
@@ -254,11 +261,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.qaError = message;
     setTimeout(() => {
       this.qaError = null;
+      this.cdr.detectChanges();
     }, 5000);
   }
 
   selectDocument(document: Document): void {
     this.documentService.selectDocument(document);
+    this.cdr.detectChanges();
   }
 
   fillHint(hint: string): void {

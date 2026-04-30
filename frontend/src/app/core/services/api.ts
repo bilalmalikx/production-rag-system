@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError, TimeoutError } from 'rxjs';
-import { catchError, timeout, retry } from 'rxjs/operators';
+import { catchError, timeout, retry, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { AnswerResponse, QuestionRequest, UploadResponse } from '../interfaces/api';
 
@@ -14,7 +14,6 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  // Upload PDF file
   uploadPDF(file: File): Observable<UploadResponse> {
     const formData = new FormData();
     formData.append('file', file);
@@ -27,7 +26,6 @@ export class ApiService {
       );
   }
 
-  // Ask question
   askQuestion(request: QuestionRequest): Observable<AnswerResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     
@@ -39,7 +37,6 @@ export class ApiService {
       );
   }
 
-  // Health check
   checkHealth(): Observable<any> {
     return this.http.get(`${this.apiUrl}/health`)
       .pipe(
@@ -48,7 +45,6 @@ export class ApiService {
       );
   }
 
-  // Error handler
   private handleError(error: HttpErrorResponse | TimeoutError) {
     let errorMessage = 'An unknown error occurred!';
     
