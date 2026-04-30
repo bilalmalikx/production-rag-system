@@ -38,7 +38,7 @@
     (onFileDropped)="onFileDropped($event)">
   </app-file-upload>
 
-  <!-- Files List -->
+  <!-- Files List with Delete Button -->
   <div class="files-section" *ngIf="documents.length > 0">
     <div class="section-label">Loaded Documents</div>
     <div class="files-list">
@@ -51,6 +51,11 @@
         <div class="file-chip-name">{{ doc.displayName }}</div>
         <div class="file-chip-meta">{{ doc.summary }}</div>
         <div class="file-chip-badge">READY</div>
+        <button class="file-chip-delete" 
+                (click)="deleteDocument(doc, $event)" 
+                title="Delete document">
+          🗑️
+        </button>
       </div>
     </div>
   </div>

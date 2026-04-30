@@ -216,6 +216,27 @@ export class HomeComponent implements OnInit, OnDestroy {
     }, 5000);
   }
 
+  // ✅ DELETE DOCUMENT FUNCTION
+  deleteDocument(document: Document, event: Event): void {
+    event.stopPropagation(); // Prevent triggering selectDocument
+    
+    if (confirm(`Are you sure you want to delete "${document.name}"?`)) {
+      // Call backend delete API if you have one
+      // this.apiService.deleteDocument(document.name).subscribe(...)
+      
+      // Remove from frontend service
+      this.documentService.removeDocument(document.name);
+      
+      // Clear current answer if deleted document was selected
+      if (this.selectedDocument?.name === document.name) {
+        this.currentAnswer = null;
+        this.questionService.setCurrentAnswer(null);
+      }
+      
+      this.cdr.detectChanges();
+    }
+  }
+
   askQuestion(): void {
     if (!this.questionText.trim()) return;
     if (!this.selectedDocument && this.documents.length === 0) {
