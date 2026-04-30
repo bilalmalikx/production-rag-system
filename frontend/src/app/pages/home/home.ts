@@ -23,9 +23,7 @@ import { StatsCardComponent } from '../../shared/components/stats-card/stats-car
   standalone: true,
   imports: [
     CommonModule, 
-    FormsModule, 
-    DragDropDirective, 
-    SafeHtmlPipe,
+    FormsModule,
     FileUploadComponent,
     QuestionInputComponent,
     AnswerDisplayComponent,
