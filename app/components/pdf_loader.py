@@ -8,10 +8,6 @@ class PDFLoaderComponent:
         self.upload_dir = config.UPLOAD_DIR
     
     def load_pdf(self, file_path: str) -> List:
-        """
-        PDF file path leke uske saare pages return karta hai
-        Each page ek document hai (content + metadata)
-        """
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"PDF not found: {file_path}")
         
@@ -25,6 +21,5 @@ class PDFLoaderComponent:
         return documents
     
     def get_pdf_pages_count(self, file_path: str) -> int:
-        """PDF mein kitne pages hain"""
         documents = self.load_pdf(file_path)
         return len(documents)

@@ -11,12 +11,10 @@ class LLMComponent:
         )
     
     def generate_response(self, prompt: str) -> str:
-        """Raw prompt bhejo, answer lo"""
         response = self.llm.invoke(prompt)
         return response.content
     
     def generate_with_context(self, question: str, context: str) -> str:
-        """Question + context dekar answer generate karo"""
         system_prompt = """You are a helpful assistant. Using the provided document context, answer the user's question.
 
 GUIDELINES:
@@ -43,5 +41,4 @@ Be helpful and extract value from whatever context is provided."""
         return response.content
     
     def get_llm_instance(self):
-        """Direct LLM instance return karta hai (advanced use cases ke liye)"""
         return self.llm
